@@ -139,9 +139,7 @@ class SettingsController extends Controller
      */
     public function retrieveTills()
     {
-        $tills = TillRefs::query()
-            ->where('default_tillno', 1)
-            ->get();
+        $tills = TillRefs::all();
 
         return response()->json(['tills' => $tills], $this->successStatus);
     }
