@@ -1,0 +1,34 @@
+@import "../../../../colours";
+
+.sales-options {
+
+    .warning {
+        background-color: $yellow;
+    }
+
+    .dark {
+        background-color: $dark;
+        color: $white;
+    }
+
+    .secondary {
+        background-color: $secondary;
+    }
+
+    .success {
+        background-color: $success;
+    }
+
+    .danger {
+        background-color: $danger;
+    }
+
+    .info {
+        background-color: $info;
+    }
+	
+	    .handwarning {
+        background-color: $light_blue;
+    }
+
+}

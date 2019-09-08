@@ -1,0 +1,35 @@
+@import "../../colours";
+
+.widget {
+
+    &.names {
+        margin-top: 3%;
+        background-color: $light_green;
+    }
+
+    &.stock {
+        margin-top: 3%;
+        background-color: $light_blue;
+    }
+
+    &.transactions {
+        margin-top: 3%;
+        background-color: $light_yellow;
+    }
+
+    &.buttons {
+        margin-top: 3%;
+    }
+
+    &.card {
+        margin-top: 5%;
+        margin-right: 15px;
+        border: none;
+
+        .fa {
+            font-size: 75px;
+        }
+
+    }
+
+}

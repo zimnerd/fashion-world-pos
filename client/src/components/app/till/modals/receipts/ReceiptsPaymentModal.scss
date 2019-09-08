@@ -1,0 +1,32 @@
+.debtor-receipts {
+
+    .table {
+
+        th {
+            min-width: 125px;
+        }
+
+    }
+
+    form {
+
+        .value {
+
+            > span {
+                margin-left: 15px;
+            }
+
+        }
+
+        .payment-method {
+
+            input[type="radio"] {
+                width: 20px;
+                margin-left: 50px;
+            }
+
+        }
+
+    }
+
+}

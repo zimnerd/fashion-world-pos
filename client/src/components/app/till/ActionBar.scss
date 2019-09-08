@@ -1,0 +1,30 @@
+@import "../../../colours";
+
+.actions {
+    bottom: 0;
+
+    .card {
+        border-color: rgba(0, 0, 0, 0.2);
+        box-shadow: 0 0 10px rgba(0, 0, 0, .5);
+        padding: 5%;
+        border-radius: 15px;
+
+        &:hover {
+            box-shadow: 0 5px 20px rgba(0, 0, 0, .5);
+        }
+
+    }
+
+}
+
+.till-text {
+    box-shadow: 0 0 10px rgba(0, 0, 0, .5);
+    bottom: 0;
+    position: fixed;
+    padding: 15px;
+
+    &:hover {
+        box-shadow: 0 5px 20px rgba(0, 0, 0, .5);
+    }
+
+}

@@ -1,0 +1,26 @@
+@import "../../colours";
+
+.widget {
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 15px;
+    margin-top: 7%;
+    padding: 20px;
+
+    &.no-top {
+        margin-top: 0;
+    }
+
+    &.widget-shadow {
+        box-shadow: 0 5px 20px rgba(0, 0, 0, .5);
+    }
+
+    hr {
+        border-color: $black;
+    }
+
+    .error {
+        color: $red;
+    }
+
+}

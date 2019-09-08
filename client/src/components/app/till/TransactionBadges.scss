@@ -1,0 +1,21 @@
+@import "../../../colours";
+
+.badges.widget-shadow {
+    text-align: center;
+    padding: 15px;
+    border-radius: 15px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, .5);
+    margin-bottom: 15px;
+    font-size: 18px;
+
+    .badge {
+        margin: 5px;
+
+        span:hover > .fa {
+            color: $black;
+            cursor: pointer;
+        }
+
+    }
+
+}

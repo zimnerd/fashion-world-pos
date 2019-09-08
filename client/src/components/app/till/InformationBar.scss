@@ -1,0 +1,22 @@
+@import "../../../colours";
+
+.info {
+
+    .widget-shadow {
+        text-align: center;
+        padding: 15px;
+        border-radius: 15px;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, .5);
+    }
+
+    hr {
+        border-color: $black;
+    }
+
+    .table {
+        margin-top: 15px;
+        max-height: 150px;
+        height: 150px;
+    }
+
+}

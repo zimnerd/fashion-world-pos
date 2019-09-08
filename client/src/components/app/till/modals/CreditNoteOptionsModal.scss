@@ -1,0 +1,26 @@
+@import "../../../../colours";
+
+.credit-note-options {
+
+    .warning {
+        background-color: $yellow;
+    }
+
+    .dark {
+        background-color: $dark;
+        color: $white;
+    }
+
+    .secondary {
+        background-color: $secondary;
+    }
+
+    .danger {
+        background-color: $red;
+    }
+
+    .success {
+        background-color: $green;
+    }
+
+}

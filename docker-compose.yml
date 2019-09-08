@@ -1,0 +1,37 @@
+version: '3.1'
+services:
+  nginx:
+    build:
+      context: .
+      dockerfile: docker/nginx/Dockerfile
+    restart: always
+    ports:
+      - "8080:80"
+      - "443:443"
+    depends_on:
+      - "php"
+
+  php:
+    build:
+      context: .
+      dockerfile: docker/php/Dockerfile
+    restart: always
+    environment:
+     - DB_PASSWORD=$DB_PASSWORD
+     - DB_HOST=$DB_HOST
+     - DB_HOST_MAIN=$DB_HOST_MAIN
+     - TILL_NUM_TXT=/var/www/html/app-data/tilldir/tillno.txt
+     - PICS_LOCATION=/var/www/html/app-data/stylepics/
+     - PDF_LOC=/usr/local/bin/wkhtmltopdf
+     - APP_KEY=base64:VAWEzrc+VgXFKKM3PpE9ngsk/dBgoAOFtCcoVv17lT0=
+
+  client:
+    build:
+      context: .
+      dockerfile: docker/client/Dockerfile
+    restart: always
+    environment:
+      - "env_file=.env.production"
+      - "NODE_ENV=production"
+    ports:
+      - "80:80"

@@ -1,0 +1,81 @@
+@import "../../../colours";
+
+.input-change {
+    max-width: 50px;
+
+    > input {
+        width: 100%;
+    }
+
+}
+
+.line-items {
+    height: 100%;
+    padding: 15px;
+    border-radius: 15px;
+
+    &.widget-shadow {
+        box-shadow: 0 5px 20px rgba(0, 0, 0, .5);
+    }
+
+    .table {
+        margin-top: 15px;
+        height: 540px;
+        max-height: 540px;
+
+        thead {
+
+            th {
+                min-width: 100px;
+            }
+
+        }
+
+        tbody {
+
+            span:hover > .fa-trash {
+                cursor: pointer;
+                color: $red;
+            }
+
+            span:hover > .fa-hand-stop-o {
+                cursor: pointer;
+                color: $warning;
+            }
+
+            .description {
+                display: grid;
+                flex-wrap: wrap;
+
+                .badge {
+                    margin-left: 5px;
+                }
+
+                span {
+                    white-space: nowrap;
+                }
+
+            }
+
+            .badge {
+
+                > span {
+                    margin-left: 5px;
+                }
+
+                &:hover {
+                    cursor: pointer;
+
+                    > span {
+                        color: $white;
+                    }
+
+                }
+
+            }
+
+        }
+
+    }
+
+}

@@ -1,0 +1,40 @@
+@import "../../../../colours";
+
+.complete-sale {
+
+    .btn-group {
+
+        > .btn {
+
+            > span {
+                margin-right: 10px;
+            }
+
+        }
+
+    }
+
+    form {
+
+        .value {
+            margin-right: 15px;
+
+            > span {
+                margin-left: 15px;
+            }
+
+        }
+
+        .payment-method {
+            display: flex;
+
+            input[type="radio"] {
+                width: 20px;
+                margin-left: 50px;
+            }
+
+        }
+
+    }
+
+}

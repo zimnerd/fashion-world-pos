@@ -1,0 +1,19 @@
+@import "../../../colours";
+
+.widget {
+
+    &.stock-info {
+        margin-top: 2%;
+    }
+
+    .stock-img {
+        transition: 1s all;
+    }
+
+    .stock-img:hover {
+        transition: 1s all;
+        width: 300px;
+        height: 300px;
+    }
+
+}
