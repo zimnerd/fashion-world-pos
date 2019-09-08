@@ -19,7 +19,7 @@ class Login extends React.Component {
     };
     canSubmit = true;
     tills = [];
-    defaultTill: [];
+    defaultTill;
     myTill = '';
 
 
@@ -27,8 +27,8 @@ class Login extends React.Component {
         let usernameField = $('#username');
         usernameField.focus();
         let userTills = [];
-        if(localStorage.getItem('tills') != null){
-        this.tills =JSON.parse(localStorage.getItem('tills'))
+        if (localStorage.getItem('tills') != null) {
+            this.tills = JSON.parse(localStorage.getItem('tills'))
         }
         this.tills.forEach(function (item, key) {
             if (item.default_tillno === 1) {
@@ -37,77 +37,54 @@ class Login extends React.Component {
 
         });
         this.defaultTill = userTills;
-        console.log(this.state);
 
     }
 
     componentDidUpdate(): void {
-        let myUser = $('#username').val().trim();
-        if (myUser !== '' && this.defaultTill[myUser]!== undefined ) {
-            console.log(myUser);
-           
-            this.state.till = this.defaultTill[myUser].tillno;
-            this.myTill = this.defaultTill[myUser].tillno;
-             console.log("Select till",this.myTill);
-            document.getElementById("tills").value = this.state.till;
-        }
-        else{
-             this.state.till = '';
-              this.myTill = '';
-              document.getElementById("tills").value = this.state.till;
+        document.getElementById("till").value = this.state.till;
 
-        }
     }
+
 
     onSubmit = event => {
         event.preventDefault();
         this.props.actions.auth.errorReset();
-        localStorage.removeItem("myTill");
-        localStorage.setItem("myTill",this.myTill);
-        console.log("On Submit",localStorage.getItem("myTill"));
-        this.props.actions.settings.retrieveTillNumber(localStorage.getItem("myTill"))
-        if ( this.myTill=== '') {
-            toastr.error("The user is not allocated a till number!", "Retrieve Till Details");
+        this.props.actions.settings.retrieveTillNumber(this.state.till);
+        if (this.state.till === undefined || this.state.till === '') {
+            toastr.error("Please select a till", "Retrieve Till Details");
             this.canSubmit = false;
             return;
-        }else{
-
-        toastr.success("Till number retrieved " +  this.myTill, "Retrieve Till Details");;
+        } else {
+            toastr.success("Till number retrieved ", "Retrieve Till Details");
         }
-         console.log("Get till details",localStorage.getItem("myTill"))
 
-        axios.get(`/v1/settings/till/${localStorage.getItem("myTill")}`)
+        axios.get(`/v1/settings/till/${this.state.till}`)
             .then(response => {
-                console.log("Till Details",response.data);
 
-                toastr.success("Till  " +  this.myTill + "  Details Retrieved!", "Retrieve Till Details");
+                toastr.success("Till Details Retrieved!", "Retrieve Till Details");
                 this.props.actions.settings.retrieveTill(response.data.till);
             })
             .catch(error => {
-                console.log(error);
                 if (error) {
-                    this.canSubmit = false
-                    toastr.error("There are no details on record for this till number  " +  this.myTill + " !", "Retrieve Till Details");
-                    return ;
+                    this.canSubmit = false;
+                    toastr.error("There are no details on record for this till number", "Retrieve Till Details");
+                    return;
                 } else {
-                    return ;
                     toastr.error("Unknown error.");
+                    return;
                 }
             });
 
-        console.log("Control",this.myTill)
-        axios.get(`/v1/settings/till/${localStorage.getItem("myTill")}/controls`)
+        axios.get(`/v1/settings/till/${this.state.till}/controls`)
             .then(response => {
-                console.log(response.data);
                 toastr.success("Till Controls Retrieved!", "Retrieve Till Controls");
                 this.props.actions.settings.retrieveTillControls(response.data.control);
             })
             .catch(error => {
-                console.log(error);
                 if (error) {
                     this.canSubmit = false
-                    toastr.error("There are no controls on record for this till number  " + this.myTill + " !", "Retrieve Till Controls");
-                return;
+                    toastr.error("There are no controls on record for this till number ", "Retrieve Till Controls");
+                    return;
                 } else {
                     toastr.error("Unknown error.");
                     return
@@ -116,32 +93,28 @@ class Login extends React.Component {
 
 
         delete this.state.till;
-        console.log(this.canSubmit);
-        if(this.canSubmit === true){
-        axios.post('/v1/user/login', {username:this.state.username, password : this.state.password})
-            .then(async response => {
-                console.log(response);
-                toastr.success('Login Successful!', 'Login User');
+        if (this.canSubmit === true) {
+            axios.post('/v1/user/login', {username: this.state.username, password: this.state.password})
+                .then(async response => {
+                    toastr.success('Login Successful!', 'Login User');
 
-                await this.updateControls();
+                    await this.updateControls();
 
-                this.props.actions.auth.loginUser(response.data.success.token);
-                this.props.history.push('/app/dashboard');
-            })
-            .catch(error => {
-                console.log("Login",error);
-                if (error) {
-                    toastr.error('The username and password combination is invalid!', 'Unauthorized');
-                return ;
-                } else {
-                    console.log(error.response);
-                    toastr.error('The information you have supplied is invalid!', 'Validation');
-                    return ;
-                    this.props.auth.actions.validationError(error.response.data.errors);
-                }
-            });
-        }else{
-          toastr.error('Failed to login', 'Validation');  
+                    this.props.actions.auth.loginUser(response.data.success.token);
+                    this.props.history.push('/app/dashboard');
+                })
+                .catch(error => {
+                    if (error) {
+                        toastr.error('The username and password combination is invalid!', 'Unauthorized');
+                        return;
+                    } else {
+                        toastr.error('The information you have supplied is invalid!', 'Validation');
+                        this.props.auth.actions.validationError(error.response.data.errors);
+                        return;
+                    }
+                });
+        } else {
+            toastr.error('Failed to login', 'Validation');
         }
     };
 
@@ -151,16 +124,15 @@ class Login extends React.Component {
 
         await axios.put(`/v1/settings/till/${this.props.settings.number}/controls`, controls)
             .then(response => {
-                console.log(response);
                 toastr.success('Updated till controls!', 'Update Till Controls');
 
                 this.props.actions.settings.retrieveTillControls(response.data.controls);
             })
             .catch(error => {
-                console.log(error);
                 if (error.response.status === 404) {
                     toastr.error("There are no controls on record for this till number!", "Retrieve Till Controls");
-               return false; }
+                    return false;
+                }
             });
     };
 
@@ -169,13 +141,37 @@ class Login extends React.Component {
         let formValues = this.state;
         let name = event.target.name;
         formValues[name] = event.target.value;
+        this.setState(formValues);
+    };
 
+    handleName = event => {
+        event.preventDefault();
+        let formValues = this.state;
+        let name = event.target.name;
+        formValues[name] = event.target.value;
+        if (event.target.value !== '' && this.defaultTill[event.target.value] !== undefined) {
+            this.myTill = this.defaultTill[event.target.value].tillno;
+            formValues['till'] = this.myTill;
+            localStorage.setItem("myTill", this.myTill);
+            $("#till").val(this.myTill);
+        } else {
+            formValues['till'] = '';
+        }
+
+        this.setState(formValues);
+    };
+
+    changeTill = event => {
+        event.preventDefault();
+        let formValues = this.state;
+        let name = event.target.name;
+        formValues[name] = event.target.value;
+        localStorage.setItem("myTill", event.target.value);
         this.setState(formValues);
     };
 
     keyDown = e => {
 
-        console.log(this.props);
         let event = window.event ? window.event : e;
         if (event.keyCode === 13) { //enter
             if (this.state.password !== "" && this.state.username !== "") {
@@ -217,7 +213,7 @@ class Login extends React.Component {
                                     <label>Username:</label>
                                     <input id='username' name='username' className='form-control' type='text'
                                            value={this.state.username}
-                                           onChange={this.handleChange} placeholder='Username' required/>
+                                           onChange={this.handleName} placeholder='Username' required/>
                                     {this.props.auth.errors['username'] &&
                                     <p className="error">{this.props.auth.errors['username']}</p>}
                                 </section>
@@ -232,19 +228,22 @@ class Login extends React.Component {
 
                                 <section className='form-group col-md-6'>
                                     <label>Till Number:</label>
-                                    <select className="form-control" name='tills' id='tills'
-                                            onChange={this.handleChange}
+                                    <select className="form-control" name='till' id='till'
+                                            onChange={this.changeTill.bind(this)}
                                             defaultValue={this.state.till}
                                             required>
                                         <option value=''>Select a till</option>
                                         {
-                                            this.tills.map((item, index) => {
-                                            return (
-                                                <option key={index}
-                                                        value={item.tillno}>{item.tillno}</option>
-                                            )
-                                        })
-                                    }
+                                            this.tills.filter(function (tillInfo) {
+                                                return tillInfo.user === $('#username').val().trim();
+                                            }).map((item, index) => {
+                                                return (
+                                                    <option key={index}
+                                                            value={item.tillno}>{item.tillno}</option>
+                                                )
+                                            })
+                                        }
+
                                     </select>
                                     {this.props.auth.errors['till'] &&
                                     <p className="error">{this.props.auth.errors['till']}</p>}

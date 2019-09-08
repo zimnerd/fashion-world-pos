@@ -27,64 +27,54 @@ class App extends React.Component {
 
         axios.get('/v1/settings/tills')
             .then( response => {
-                console.log("Get tills", response.data.tills);
                 toastr.success("Tills Retrieved!", "Retrieve Till Number");
                 localStorage.setItem('tills',JSON.stringify(response.data.tills));
                 this.props.actions.settings.retrieveTills(response.data.tills);
             })
             .catch(error => {
-                console.log(error);
                 toastr.error("Unknown error.");
             });
 
 
         axios.get('/v1/settings/shop')
             .then(response => {
-                console.log(response.data);
 
                 toastr.success("Shop Details Retrieved!", "Retrieve Shop Details");
                 this.props.actions.settings.retrieveShop(response.data.shop);
             })
             .catch(error => {
-                console.log(error);
                 toastr.error("Unknown error.");
             });
 
 
         axios.get('/v1/auth/roles')
             .then(response => {
-                console.log(response.data);
 
                 toastr.success("Roles Retrieved!", "Retrieve Roles");
                 this.props.actions.auth.retrieveRoles(response.data.roles);
             })
             .catch(error => {
-                console.log(error);
                 toastr.error("Unknown error.");
             });
 
         axios.get('/v1/settings/reasons')
             .then(response => {
-                console.log(response.data);
 
                 toastr.success("Reasons Retrieved!", "Retrieve Reasons");
                 this.props.actions.settings.retrieveReasons(response.data.reasons);
             })
             .catch(error => {
-                console.log(error);
                 toastr.error("Unknown error.");
             });
 
 
         axios.get('/v1/settings/tax')
             .then(response => {
-                console.log(response.data);
 
                 toastr.success("Tax Rate Retrieved!", "Retrieve Tax Rate");
                 this.props.actions.settings.retrieveTax(Number(response.data.tax));
             })
             .catch(error => {
-                console.log(error);
                 toastr.error("Unknown error.");
             });
     };
@@ -110,8 +100,6 @@ class App extends React.Component {
     }
 
 }
-
-
 
 
 function mapStateToProps(state) {
