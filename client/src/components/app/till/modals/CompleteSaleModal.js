@@ -1,7 +1,7 @@
 import React from 'react';
-import { Button, Form, Modal } from "react-bootstrap";
-import { bindActionCreators } from "redux";
-import { connect } from "react-redux";
+import {Button, Form, Modal} from "react-bootstrap";
+import {bindActionCreators} from "redux";
+import {connect} from "react-redux";
 import axios from "axios";
 import toastr from "toastr";
 import $ from "jquery";
@@ -170,7 +170,7 @@ class CompleteSaleModal extends React.Component {
             'Authorization': 'Bearer ' + this.props.auth.token
         };
 
-        await axios.post(`/v1/transactions/refunds`, this.props.till.refundData, { headers })
+        await axios.post(`/v1/transactions/refunds`, this.props.till.refundData, {headers})
             .then(response => {
                 console.log(response.data);
                 toastr.success("Refund saved!", "Save Refund");
@@ -229,7 +229,7 @@ class CompleteSaleModal extends React.Component {
             'Authorization': 'Bearer ' + this.props.auth.token
         };
 
-        axios.post(`/v1/transactions`, transaction, { headers })
+        axios.post(`/v1/transactions`, transaction, {headers})
             .then(response => {
                 console.log(response.data);
 
@@ -256,9 +256,9 @@ class CompleteSaleModal extends React.Component {
 
     completeSale = () => {
         if (this.state.tendered > this.props.till.totals.total) {
-            this.setState({ tendered: Number(this.props.till.totals.total) }, () => this.complete());
+            this.setState({tendered: Number(this.props.till.totals.total)}, () => this.complete());
         } else {
-            this.setState({ tendered: Number(this.state.tendered) }, () => this.complete());
+            this.setState({tendered: Number(this.state.tendered)}, () => this.complete());
         }
     };
 
@@ -342,7 +342,7 @@ class CompleteSaleModal extends React.Component {
             'Authorization': 'Bearer ' + this.props.auth.token
         };
 
-        axios.post(`/v1/transactions`, transaction, { headers })
+        axios.post(`/v1/transactions`, transaction, {headers})
             .then(async response => {
                 console.log(response.data);
 
@@ -397,7 +397,7 @@ class CompleteSaleModal extends React.Component {
             'Authorization': 'Bearer ' + this.props.auth.token
         };
 
-        axios.get(`/v1/sales`, { headers })
+        axios.get(`/v1/sales`, {headers})
             .then(response => {
                 console.log(response.data);
 
@@ -427,7 +427,7 @@ class CompleteSaleModal extends React.Component {
             'Authorization': 'Bearer ' + this.props.auth.token
         };
 
-        axios.delete(`/v1/sales/${saleNum}`, { headers })
+        axios.delete(`/v1/sales/${saleNum}`, {headers})
             .then(response => {
                 console.log(response.data);
                 toastr.success("Held Sale removed!", "Remove Held Sale");
@@ -514,8 +514,11 @@ class CompleteSaleModal extends React.Component {
     };
 
     saveSettings = (type) => {
+        console.log(type);
         let till = this.props.settings.till;
+        console.log(till);
         let shop = this.props.settings.shop;
+        console.log(shop);
         if (type === "L/B") {
             till.DepNo = Number(till.DepNo) + 1;
             if (shop.oneLaybyeNo === "Yes") {
@@ -556,7 +559,7 @@ class CompleteSaleModal extends React.Component {
                 'Authorization': 'Bearer ' + this.props.auth.token
             };
 
-            axios.get(`/v1/people/${this.state.cell}`, { headers })
+            axios.get(`/v1/people/${this.state.cell}`, {headers})
                 .then(response => {
                     console.log(response.data);
 
@@ -854,7 +857,7 @@ class CompleteSaleModal extends React.Component {
                                 <label>Amount Tendered:</label>
                                 <input type="text" className="form-control" value={this.state.tendered}
                                        autoComplete="false" id="saleTendered"
-                                       name="tendered" onFocus={() => this.setState({ tendered: "" })}
+                                       name="tendered" onFocus={() => this.setState({tendered: ""})}
                                        disabled={this.state.method === "Split"} onChange={this.handleChange}/>
                             </div>
                             {this.state.tendered > this.props.till.totals.total &&
@@ -942,9 +945,9 @@ class CompleteSaleModal extends React.Component {
                     {this.props.till.transactions &&
                     this.props.till.totals &&
                     (this.props.till.laybye
-                    || this.props.till.credit
-                    || (this.props.till.staff && this.state.tendered >= this.props.till.totals.total)
-                    || this.state.tendered >= this.props.till.totals.total) &&
+                        || this.props.till.credit
+                        || (this.props.till.staff && this.state.tendered >= this.props.till.totals.total)
+                        || this.state.tendered >= this.props.till.totals.total) &&
                     this.props.till.transactions.length > 0 &&
                     <Button variant="success" onClick={this.completeSale} id="saleUpdate">
                         Update & Print

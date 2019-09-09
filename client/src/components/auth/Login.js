@@ -17,7 +17,7 @@ class Login extends React.Component {
         password: '',
         till: ''
     };
-    canSubmit = true;
+    canSubmit = '';
     tills = [];
     defaultTill;
     myTill = '';
@@ -42,6 +42,9 @@ class Login extends React.Component {
 
     componentDidUpdate(): void {
         document.getElementById("till").value = this.state.till;
+        console.log("UPDATED...")
+        console.log(this.state.till)
+
 
     }
 
@@ -49,57 +52,64 @@ class Login extends React.Component {
     onSubmit = event => {
         event.preventDefault();
         this.props.actions.auth.errorReset();
-        this.props.actions.settings.retrieveTillNumber(this.state.till);
-        if (this.state.till === undefined || this.state.till === '') {
-            toastr.error("Please select a till", "Retrieve Till Details");
-            this.canSubmit = false;
-            return;
-        } else {
-            toastr.success("Till number retrieved ", "Retrieve Till Details");
+        const getTill = () => {
+            if (this.state.till === undefined || this.state.till === '') {
+                toastr.error("Please select a till", "Retrieve Till Details");
+                return;
+            } else {
+                toastr.success("Till number retrieved ", "Retrieve Till Details");
+                this.props.actions.settings.retrieveTillNumber(this.state.till);
+                getTillDetails();
+            }
+        };
+
+        const getTillDetails = () => {
+            axios.get(`/v1/settings/till/${this.state.till}`)
+                .then(response => {
+                    toastr.success("Till Details Retrieved!", "Retrieve Till Details");
+                    this.props.actions.settings.retrieveTill(response.data.till);
+                    getControl();
+                })
+                .catch(error => {
+                    if (error) {
+                        this.canSubmit = false;
+                        toastr.error("There are no details on record for this till number", "Retrieve Till Details");
+                        return;
+                    } else {
+                        toastr.error("Unknown error.");
+                        return;
+                    }
+                });
         }
 
-        axios.get(`/v1/settings/till/${this.state.till}`)
-            .then(response => {
 
-                toastr.success("Till Details Retrieved!", "Retrieve Till Details");
-                this.props.actions.settings.retrieveTill(response.data.till);
-            })
-            .catch(error => {
-                if (error) {
-                    this.canSubmit = false;
-                    toastr.error("There are no details on record for this till number", "Retrieve Till Details");
-                    return;
-                } else {
-                    toastr.error("Unknown error.");
-                    return;
-                }
-            });
+        getTill();
 
-        axios.get(`/v1/settings/till/${this.state.till}/controls`)
-            .then(response => {
-                toastr.success("Till Controls Retrieved!", "Retrieve Till Controls");
-                this.props.actions.settings.retrieveTillControls(response.data.control);
-            })
-            .catch(error => {
-                if (error) {
-                    this.canSubmit = false
-                    toastr.error("There are no controls on record for this till number ", "Retrieve Till Controls");
-                    return;
-                } else {
-                    toastr.error("Unknown error.");
-                    return
-                }
-            });
+        const getControl = () => {
+            axios.get(`/v1/settings/till/${this.state.till}/controls`)
+                .then(response => {
+                    toastr.success("Till Controls Retrieved!", "Retrieve Till Controls");
+                    this.props.actions.settings.retrieveTillControls(response.data.control);
+                    doLogin();
+                })
+                .catch(error => {
+                    if (error) {
+                        console.log(error);
+                        toastr.error("There are no controls on record for this till number ", "Retrieve Till Controls");
+                        return;
+                    } else {
+                        toastr.error("Unknown error.");
+                        return
+                    }
+                });
+        };
 
 
-        delete this.state.till;
-        if (this.canSubmit === true) {
+        const doLogin = () => {
             axios.post('/v1/user/login', {username: this.state.username, password: this.state.password})
                 .then(async response => {
-                    toastr.success('Login Successful!', 'Login User');
-
                     await this.updateControls();
-
+                    toastr.success('Login Successful!', 'Login User');
                     this.props.actions.auth.loginUser(response.data.success.token);
                     this.props.history.push('/app/dashboard');
                 })
@@ -113,8 +123,6 @@ class Login extends React.Component {
                         return;
                     }
                 });
-        } else {
-            toastr.error('Failed to login', 'Validation');
         }
     };
 
