@@ -58,8 +58,8 @@ class Login extends React.Component {
                 return;
             } else {
                 toastr.success("Till number retrieved ", "Retrieve Till Details");
-                this.props.actions.settings.retrieveTillNumber(this.state.till);
                 getTillDetails();
+                this.props.actions.settings.retrieveTillNumber(this.state.till);
             }
         };
 

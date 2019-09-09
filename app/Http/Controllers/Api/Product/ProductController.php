@@ -106,11 +106,17 @@ class ProductController extends Controller
         $queryBuilder->where('style', $product->code);
         $quantities = $queryBuilder->get();
 
-        $location = env("PICS_LOCATION");
+        $url = env("APP_URL").env("PICS_LOCATION");
+        $location = public_path().env("PICS_LOCATION");
+
         $name = $location . strtolower($product->code) . ".jpg";
+        $namePng = $location . strtolower($product->code) . ".png";
         $image = "";
 
         try {
+           if (!file_exists($name)) {
+           $name = $namePng;
+           }
             $file = file_get_contents($name);
             if ($file !== FALSE) {
                 $image = "" . base64_encode($file) . "";
