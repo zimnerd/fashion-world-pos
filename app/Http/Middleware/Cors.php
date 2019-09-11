@@ -16,8 +16,10 @@ class Cors
     public function handle($request, Closure $next)
     {
         return $next($request)
+            // For security, you should probably specify a URL:
+            // e.g. ->header('Access-Control-Allow-Origin', 'http://localhost:8080')
             ->header('Access-Control-Allow-Origin', '*')
-            ->header('Access-Control-Allow-Methods', '*')
-            ->header('Access-Control-Allow-Headers', '*');
+            ->header('Access-Control-Allow-Headers', 'X-PINGOTHER, Content-Type, Authorization, Content-Length, X-Requested-With')
+            ->header('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE, OPTIONS');
     }
 }
