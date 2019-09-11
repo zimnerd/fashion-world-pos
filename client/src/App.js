@@ -19,16 +19,16 @@ import './App.scss';
 class App extends React.Component {
     componentDidMount = async () => {
 
-        let ip = "192.168.101.227:3000/api";
+        let ip = "localhost:3000/api";
         if (process.env.REACT_APP_IP_HOST != null) {
             ip = process.env.REACT_APP_IP_HOST;
         }
         axios.defaults.baseURL = `http://${ip}`;
 
         axios.get('/v1/settings/tills')
-            .then( response => {
+            .then(response => {
                 toastr.success("Tills Retrieved!", "Retrieve Till Number");
-                localStorage.setItem('tills',JSON.stringify(response.data.tills));
+                localStorage.setItem('tills', JSON.stringify(response.data.tills));
                 this.props.actions.settings.retrieveTills(response.data.tills);
             })
             .catch(error => {

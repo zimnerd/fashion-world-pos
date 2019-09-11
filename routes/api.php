@@ -11,7 +11,7 @@
 |
 */
 
-Route::group(["prefix" => "v1/user", 'middleware'=>'cors'], function () {
+Route::group(["prefix" => "v1/user"], function () {
 
     Route::post('login', 'Api\Authentication\UserController@login');
     Route::post('admin/login', 'Api\Authentication\UserController@adminLogin');
@@ -23,7 +23,7 @@ Route::group(["prefix" => "v1/user", 'middleware'=>'cors'], function () {
 
 });
 
-Route::group(["prefix" => "v1/products", 'middleware'=>'cors'], function () {
+Route::group(["prefix" => "v1/products"], function () {
 
     Route::group(['middleware' => 'auth:api'], function () {
         Route::get('', 'Api\Product\ProductController@retrieveStock');
@@ -35,7 +35,7 @@ Route::group(["prefix" => "v1/products", 'middleware'=>'cors'], function () {
 
 });
 
-Route::group(["prefix" => "v1/people", 'middleware'=>'cors'], function () {
+Route::group(["prefix" => "v1/people"], function () {
 
     Route::group(['middleware' => 'auth:api'], function () {
         Route::get('{cell}', 'Api\PersonController@retrievePerson');
@@ -43,7 +43,7 @@ Route::group(["prefix" => "v1/people", 'middleware'=>'cors'], function () {
 
 });
 
-Route::group(["prefix" => "v1/salesmen", 'middleware'=>'cors'], function () {
+Route::group(["prefix" => "v1/salesmen"], function () {
 
     Route::group(['middleware' => 'auth:api'], function () {
         Route::get('', 'Api\SalesmanController@retrieveSalesmen');
@@ -51,7 +51,7 @@ Route::group(["prefix" => "v1/salesmen", 'middleware'=>'cors'], function () {
 
 });
 
-Route::group(["prefix" => "v1/settings", 'middleware'=>'cors'], function () {
+Route::group(["prefix" => "v1/settings"], function () {
 
     Route::group(['middleware' => 'auth:api'], function () {
         Route::get('combos', 'Api\Settings\SettingsController@retrieveCombos');
@@ -72,11 +72,11 @@ Route::group(["prefix" => "v1/settings", 'middleware'=>'cors'], function () {
 
 });
 
-Route::group(["prefix" => "v1/auth", 'middleware'=>'cors'], function () {
+Route::group(["prefix" => "v1/auth"], function () {
     Route::get('roles', 'Api\Authentication\AuthenticationController@retrieveRoles');
 });
 
-Route::group(["prefix" => "v1/debtors", 'middleware'=>'cors'], function () {
+Route::group(["prefix" => "v1/debtors"], function () {
 
     Route::group(['middleware' => 'auth:api'], function () {
         Route::get('', 'Api\Transaction\DebtorController@retrieveDebtors');
@@ -88,7 +88,7 @@ Route::group(["prefix" => "v1/debtors", 'middleware'=>'cors'], function () {
 
 });
 
-Route::group(["prefix" => "v1/laybyes", 'middleware'=>'cors'], function () {
+Route::group(["prefix" => "v1/laybyes"], function () {
 
     Route::group(['middleware' => 'auth:api'], function () {
         Route::get('', 'Api\Transaction\LaybyeController@retrieveLayByes');
@@ -100,7 +100,7 @@ Route::group(["prefix" => "v1/laybyes", 'middleware'=>'cors'], function () {
 
 });
 
-Route::group(["prefix" => "v1/sales", 'middleware'=>'cors'], function () {
+Route::group(["prefix" => "v1/sales"], function () {
 
     Route::group(['middleware' => 'auth:api'], function () {
         Route::get('', 'Api\Transaction\SaleController@getSales');
@@ -111,13 +111,13 @@ Route::group(["prefix" => "v1/sales", 'middleware'=>'cors'], function () {
 
 });
 
-Route::group(["prefix" => "v1/airtime", 'middleware'=>'cors'], function () {
+Route::group(["prefix" => "v1/airtime"], function () {
 
     Route::get('{code}/print/{serialNo}', 'Api\Product\AirtimeController@printVoucher');
 
 });
 
-Route::group(["prefix" => "v1/transactions", 'middleware'=>'cors'], function () {
+Route::group(["prefix" => "v1/transactions"], function () {
 
     Route::get('{id}/print', 'Api\Transaction\TransactionController@printReceipt');
     Route::get('{id}/print/debtor', 'Api\Transaction\TransactionController@printDebtorReceipt');
